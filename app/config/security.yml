@@ -1,0 +1,296 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    enable_authenticator_manager: true
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        Nucleos\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_CUSTOMER: ROLE_USER
+        ROLE_COURIER: ROLE_CUSTOMER
+        ROLE_RESTAURANT: ROLE_USER
+        ROLE_STORE: ROLE_USER
+        ROLE_LOOPEAT: ROLE_USER
+        ROLE_ADMIN: [ ROLE_COURIER, ROLE_LOOPEAT ]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        fos_userbundle:
+            id: nucleos_user.user_provider.username_email
+        # jwt:
+        #     lexik_jwt:
+        #         class: AppBundle\Entity\User
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api_login:
+            pattern:  ^/api/login
+            stateless: true
+            form_login:
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+
+        oauth2_token:
+            pattern: ^/oauth2/token$
+            security: false
+
+        api_facebook_login:
+            pattern: ^/api/facebook/login$
+            security: false
+
+        api_sign_in_with_apple_login:
+            pattern: ^/api/sign_in_with_apple/login$
+            security: false
+
+        api_google_sign_in_login:
+            pattern: ^/api/google_sign_in/login$
+            security: false
+
+        api_deliveries:
+            pattern:   ^/api/deliveries
+            methods: [ GET, POST, PUT, DELETE ]
+            stateless: true
+            bearer_token: true
+
+        api_tasks_import:
+            pattern:   ^/api/tasks/import
+            methods: [ POST ]
+            stateless: true
+            bearer_token: true
+
+        api_task_events_get:
+            pattern:   ^/api/tasks/[0-9]+/events$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_task_get:
+            pattern:   ^/api/tasks/[0-9]+$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_task_lists_get:
+            pattern:   ^/api/task_lists$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_task_groups:
+            pattern:   ^/api/task_groups/[0-9]+$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_store_deliveries:
+            pattern:   ^/api/stores/[0-9]+/deliveries$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_stores:
+            pattern:   ^/api/stores/[0-9]+$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_time_slots:
+            pattern:   ^/api/time_slots
+            stateless: true
+            bearer_token: true
+
+        api_retail_prices_calculate:
+            pattern:   ^/api/retail_prices/calculate
+            stateless: true
+            bearer_token: true
+
+        api_urbantz:
+            pattern:   ^/api/urbantz
+            methods: [ GET, POST, PUT, DELETE ]
+            stateless: true
+            bearer_token: true
+
+        api_task_import_queues:
+            pattern:   ^/api/task_import_queues
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_carts_session:
+            pattern:   ^/api/carts/session$
+            methods: [ POST ]
+            stateless: true
+            cart_session: true
+
+        api_orders_get:
+            pattern:   ^/api/orders/[0-9]+$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_orders_accept:
+            pattern:   ^/api/orders/[0-9]+/accept$
+            methods: [ PUT ]
+            stateless: true
+            bearer_token: true
+
+        api_carts:
+            pattern:   ^/api/orders/[0-9]+$
+            methods: [ PUT ]
+            stateless: true
+            cart_session: true
+
+        api_cart_items:
+            pattern:   ^/api/orders/[0-9]+/items$
+            methods: [ POST ]
+            stateless: true
+            cart_session: true
+
+        api_cart_item:
+            pattern:   ^/api/orders/[0-9]+/items/[0-9]+$
+            methods: [ PUT, DELETE ]
+            stateless: true
+            cart_session: true
+
+        api_cart_operations:
+            pattern:   ^/api/orders/[0-9]+/(assign|timing|validate|tip)$
+            methods: [ GET, PUT ]
+            stateless: true
+            cart_session: true
+
+        api_cart_payment:
+            pattern:   ^/api/orders/[0-9]+/payment$
+            methods: [ GET ]
+            stateless: true
+            cart_session: true
+
+        api_cart_payment_methods:
+            pattern:   ^/api/orders/[0-9]+/payment_methods$
+            methods: [ GET ]
+            stateless: true
+            cart_session: true
+
+        api_cart_pay:
+            pattern:   ^/api/orders/[0-9]+/pay$
+            methods: [ PUT ]
+            stateless: true
+            cart_session: true
+
+        api_cart_mercadopago_preference:
+            pattern:   ^/api/orders/[0-9]+/mercadopago-preference$
+            methods: [ GET ]
+            stateless: true
+            cart_session: true
+
+        api_me:
+            pattern:   ^/api/me$
+            methods: [ GET ]
+            stateless: true
+            bearer_token: true
+
+        api_webhooks:
+            pattern:   ^/api/webhooks
+            stateless: true
+            bearer_token: true
+
+        api_woopit:
+            pattern:   ^/api/woopit
+            stateless: true
+            bearer_token: true
+
+        token_refresh:
+            pattern:  ^/api/token/refresh
+            stateless: true
+            refresh_jwt:
+                provider: fos_userbundle
+
+        api_docs:
+            pattern:   ^/api/docs
+            security: false
+
+        api_root:
+            pattern:   ^/api$
+            security: false
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
+
+        # Disable session to improve performance
+        # TraceableFirewallListener will be skipped
+
+        # FIXME
+        # Causes a problem in AppBundle\Sylius\Cart\SessionSubscriber
+        # When an admin adds products to the cart of a *DISABLED* restaurant,
+        # an AJAX request invoking SessionSubscriber may clear the cart,
+        # because of the mechanism to cleanup carts with disabled restaurant.
+
+        restaurant_fulfillment_timing:
+            pattern: ^/restaurant/[0-9]+/timing$
+            methods: [ GET ]
+            security: false
+
+        # search_restaurants:
+        #     pattern: ^/search/restaurants
+        #     methods: [ GET ]
+        #     stateless: true
+        #     anonymous: ~
+
+        search_geocode:
+            pattern: ^/search/geocode
+            methods: [ GET ]
+            security: false
+
+        web:
+            pattern:            ^/
+            form_login:
+                provider:       fos_userbundle
+                success_handler: coopcycle.web_success_handler
+            oauth:
+                resource_owners:
+                    facebook:             "/login/check-facebook"
+                login_path:        /login
+                use_forward:       false
+                failure_path:      /login
+                oauth_user_provider:
+                    service: coopcycle.user_provider
+            logout: true
+            remember_me:
+                secret: '%secret%'
+
+        main:
+            lazy: true
+
+    access_control:
+        - { path: ^/login, role: PUBLIC_ACCESS }
+        - { path: ^/register, role: PUBLIC_ACCESS }
+        - { path: ^/resetting, role: PUBLIC_ACCESS }
+        - { path: ^/order/public, roles: PUBLIC_ACCESS }
+        - { path: ^/dashboard, roles: [ ROLE_ADMIN, ROLE_RESTAURANT, ROLE_STORE ] }
+        - { path: ^/profile/restaurants, roles: ROLE_RESTAURANT }
+        - { path: ^/profile/jwt, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/profile/notifications, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/profile, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/_uploader/restaurant, roles: [ ROLE_ADMIN, ROLE_RESTAURANT ] }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/facebook/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/orders/timing, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/resetting, role: PUBLIC_ACCESS }
+        - { path: ^/api/routing, roles: PUBLIC_ACCESS }
+        - { path: ^/api/settings, roles: PUBLIC_ACCESS }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/restaurants, roles: PUBLIC_ACCESS, methods: [ GET ] }
+        - { path: ^/api/carts/session$, roles: PUBLIC_ACCESS, methods: [ POST ] }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

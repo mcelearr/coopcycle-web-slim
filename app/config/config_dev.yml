@@ -1,0 +1,89 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.project_dir%/app/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+    session:
+        save_path:   "/tmp"
+
+# Uncomment to send emails in dev
+# parameters:
+#     nucleos_profile.registration.confirmation.enabled: true
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/%kernel.environment%.log"
+            level: debug
+            max_files: 3
+            channels: ["!event", "!api", "!stripe", "!loopeat"]
+        console:
+            type:   console
+            channels: ["!event", "!doctrine"]
+        api:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/api.%kernel.environment%.log"
+            level: info
+            formatter: monolog.formatter.json
+            max_files: 3
+            channels: [api]
+        fee_calculation:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/fee_calculation.%kernel.environment%.log"
+            level: info
+            formatter: monolog.formatter.json
+            max_files: 3
+            channels: [fee_calculation]
+        timing:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/timing.%kernel.environment%.log"
+            level: info
+            max_files: 3
+            channels: [timing]
+        geofencing:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/geofencing.%kernel.environment%.log"
+            level: info
+            formatter: monolog.formatter.json
+            max_files: 3
+            channels: [geofencing]
+        stripe:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/stripe.%kernel.environment%.log"
+            level: info
+            max_files: 3
+            channels: [stripe]
+        loopeat:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/loopeat.%kernel.environment%.log"
+            level: info
+            max_files: 3
+            channels: [loopeat]
+        urbantz:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/urbantz.%kernel.environment%.log"
+            level: info
+            max_files: 3
+            channels: [urbantz]
+        dabba:
+            type: rotating_file
+            path: "%env(APP_LOG_DIR)%/dabba.%kernel.environment%.log"
+            level: info
+            max_files: 3
+            channels: [dabba]
+        # uncomment to get logging in your browser
+        # you may have to allow bigger header sizes in your Web server configuration
+        #firephp:
+        #    type:   firephp
+        #    level:  info
+        #chromephp:
+        #    type:   chromephp
+        #    level:  info

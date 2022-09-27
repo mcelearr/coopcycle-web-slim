@@ -1,0 +1,17 @@
+AppBundle\Entity\User:
+  bob:
+    __factory:
+      '@Nucleos\UserBundle\Util\UserManipulator::create':
+        - 'bob'
+        - '123456'
+        - 'bob@demo.coopcycle.org'
+        - true
+        - false
+  sarah:
+    __factory:
+      '@Nucleos\UserBundle\Util\UserManipulator::create':
+        - 'sarah'
+        - '123456'
+        - 'sarah@demo.coopcycle.org'
+        - true
+        - false

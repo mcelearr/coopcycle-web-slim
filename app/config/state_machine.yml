@@ -1,0 +1,80 @@
+winzou_state_machine:
+    sylius_order:
+        class: "%sylius.model.order.class%"
+        property_path: state
+        graph: sylius_order
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            cart: ~
+            new: ~
+            cancelled: ~
+            fulfilled: ~
+            accepted: ~
+            refused: ~
+            ready: ~
+        transitions:
+            create:
+                from: [cart]
+                to: new
+            cancel:
+                from: [new, accepted]
+                to: cancelled
+            fulfill:
+                from: [new, accepted]
+                to: fulfilled
+            accept:
+                from: [new]
+                to: accepted
+            refuse:
+                from: [new]
+                to: refused
+        callbacks:
+            guard:
+                guard_on_fulfill:
+                    on:   'fulfill'
+                    do:   ['@AppBundle\Domain\Order\Workflow\Guard', 'isFulfillable']
+                    args: ['object']
+    sylius_payment:
+        class: "%sylius.model.payment.class%"
+        property_path: state
+        graph: sylius_payment
+        state_machine_class: "%sylius.state_machine.class%"
+        states:
+            cart: ~
+            new: ~
+            authorized: ~
+            processing: ~
+            completed: ~
+            failed: ~
+            cancelled: ~
+            void: ~
+            refunded: ~
+            refunded_partially: ~
+        transitions:
+            create:
+                from: [cart]
+                to: new
+            authorize:
+                from: [cart, new]
+                to: authorized
+            process:
+                from: [new]
+                to: processing
+            complete:
+                from: [new, authorized, processing]
+                to: completed
+            fail:
+                from: [cart, new, authorized, processing]
+                to: failed
+            cancel:
+                from: [cart, new, authorized]
+                to: cancelled
+            refund:
+                from: [completed, refunded_partially]
+                to: refunded
+            refund_partially:
+                from: [completed]
+                to: refunded_partially
+            void:
+                from: [new, processing]
+                to: void

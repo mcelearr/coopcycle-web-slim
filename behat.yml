@@ -1,0 +1,21 @@
+default:
+  calls:
+    error_reporting: 8191 # E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED
+  suites:
+    default:
+      contexts:
+        - Tests\Behat\FeatureContext
+        - Behat\MinkExtension\Context\MinkContext
+        - Behatch\Context\RestContext
+        - Behatch\Context\JsonContext
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        class: AppKernel
+        environment: test
+        debug: true
+    Behat\MinkExtension:
+      sessions:
+        default:
+          symfony: ~
+    Behatch\Extension: ~
