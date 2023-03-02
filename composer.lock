@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6be9c20d565688d68d2374bcd35f010",
+    "content-hash": "6ca20a0d337dfc1f78dbaff60e08ce7e",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2853,20 +2853,20 @@
         },
         {
             "name": "drupal/core-vendor-hardening",
-            "version": "9.2.x-dev",
+            "version": "10.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-vendor-hardening.git",
-                "reference": "f9eaafd58792fef38037979c2344a9216a93cc7e"
+                "reference": "45e4f9ad3353531139bcdde280122b051df0dbe8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-vendor-hardening/zipball/f9eaafd58792fef38037979c2344a9216a93cc7e",
-                "reference": "f9eaafd58792fef38037979c2344a9216a93cc7e",
+                "url": "https://api.github.com/repos/drupal/core-vendor-hardening/zipball/45e4f9ad3353531139bcdde280122b051df0dbe8",
+                "reference": "45e4f9ad3353531139bcdde280122b051df0dbe8",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.1 || ^2",
+                "composer-plugin-api": "^2",
                 "php": ">=7.3.0"
             },
             "type": "composer-plugin",
@@ -2888,9 +2888,9 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-vendor-hardening/tree/9.2.x"
+                "source": "https://github.com/drupal/core-vendor-hardening/tree/10.0.4"
             },
-            "time": "2021-04-22T15:46:23+00:00"
+            "time": "2022-12-07T11:22:37+00:00"
         },
         {
             "name": "edamov/pushok",
@@ -22311,7 +22311,6 @@
     "stability-flags": {
         "league/geotools": 0,
         "sonata-project/seo-bundle": 20,
-        "drupal/core-vendor-hardening": 20,
         "nucleos/user-bundle": 20,
         "nucleos/profile-bundle": 20,
         "shahonseven/php-color-hash": 20,
@@ -22323,5 +22322,5 @@
         "php": ">=8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
